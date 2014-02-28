@@ -1,6 +1,6 @@
 {
     "architecture": "all",
-    "description": "description of eventunity",
+    "description": "Find community events near you",
     "framework": "ubuntu-sdk-13.10",
     "hooks": {
         "eventunity": {
@@ -8,7 +8,7 @@
             "desktop": "eventunity.desktop"
         }
     },
-    "maintainer": "",
+    "maintainer": "Pablo Seminario",
     "name": "com.ubuntu.developer.username.eventunity",
     "title": "eventunity",
     "version": "0.1"
