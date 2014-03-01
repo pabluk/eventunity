@@ -24,9 +24,9 @@ window.onload = function () {
 
     function loadEvents(community) {
         UI.pagestack.push("event-page")
+        var event_list = UI.list('[id="events"]');
+        event_list.removeAllItems();
         $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/", function(data) {
-            var event_list = UI.list('[id="events"]');
-            event_list.removeAllItems();
 	        event_list.setHeader("Upcoming events for " + community.name);
             $.each(data, function(i, e) {
                 event_list.append(
@@ -43,6 +43,10 @@ window.onload = function () {
 
     function loadEventDetail(e) {
         UI.pagestack.push("detail-page")
+        $('#detail-title').text('');
+        $('#detail-date').text('');
+        $('#detail-location').text('');
+        $('#detail-description').text('');
         $.getJSON(eventunityAPI + "/events/" + e.id + "/detail/", function(detail) {
             $('#detail-title').text(detail.title);
             $('#detail-date').text(detail.date);
