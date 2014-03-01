@@ -2,56 +2,54 @@
  * Wait before the DOM has been loaded before initializing the Ubuntu UI layer
  */
 window.onload = function () {
+    var eventunityAPI = 'http://eventunity.debugstack.com';
     var UI = new UbuntuUI();
     UI.init();
+    UI.pagestack.push("main");
 
-    // Wire all the simple logic
-    document.getElementById('no').addEventListener('click', function() {
-        UI.dialog('dialog1').hide();
-    });
-
-    function getContacts() {
-        return [].slice.call(document.querySelectorAll('#contacts li'));
-    };
-
-    var contacts = getContacts();
-    contacts.forEach(function (contact) {
-        contact.addEventListener('click', function() {
-            contact.classList.add('selected');
+    $.getJSON(eventunityAPI + "/communities/", function(data) {
+        var community_list = UI.list('[id="communities"]');
+        community_list.removeAllItems();
+        community_list.setHeader("Choose a community");
+        $.each(data, function(i, community) {
+            community_list.append(
+                community.name,
+                null,
+                community.id,
+                function(target, community) {loadEvents(community);},
+                community
+            );
         });
     });
 
-    function getSelectedContacts() {
-        var selectedContactInputs = [].slice.call(document.querySelectorAll('#contacts li label input:checked'));
-        return selectedContactInputs.map(function (contactInputElement) { return contactInputElement.parentNode.parentNode; });
+    function loadEvents(community) {
+        UI.pagestack.push("event-page")
+        $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/", function(data) {
+            var event_list = UI.list('[id="events"]');
+            event_list.removeAllItems();
+	        event_list.setHeader("Upcoming events for " + community.name);
+            $.each(data, function(i, e) {
+                event_list.append(
+                    e.title,
+                    null,
+                    e.id,
+                    function(target, e) {loadEventDetail(e);},
+                    e
+                );
+            });
+        });
+
     }
 
-    function getContactName(contact) {
-        return contact.querySelector('p').innerHTML;
+    function loadEventDetail(e) {
+        UI.pagestack.push("detail-page")
+        $.getJSON(eventunityAPI + "/events/" + e.id + "/detail/", function(detail) {
+            $('#detail-title').text(detail.title);
+            $('#detail-date').text(detail.date);
+            $('#detail-location').text(detail.location);
+            $('#detail-description').text(detail.description);
+        });
     }
-
-    function displayMessage(message) {
-        document.querySelector('#dialog1 h1').innerHTML = message;
-        UI.dialog('dialog1').show();
-    };
-
-    document.getElementById('call').addEventListener('click', function() {
-        var sc = getSelectedContacts();
-        if (! sc || sc.length !== 1) {
-            displayMessage('Please select one and only one contact');
-            return;
-        }
-        displayMessage('Calling: ' + getContactName(sc[0]));
-    });
-
-    document.getElementById('text').addEventListener('click', function() {
-        var sc = getSelectedContacts();
-        if (! sc || sc.length !== 1) {
-            displayMessage('Please select one and only one contact');
-            return;
-        }
-        displayMessage('Texting: ' + getContactName(sc[0]));
-    });
 
     // Add an event listener that is pending on the initialization
     //  of the platform layer API, if it is being used.
