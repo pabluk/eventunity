@@ -20,6 +20,7 @@
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/pagestacks.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
 
     <!-- Cordova platform API access - Uncomment this to have access to the Javascript APIs -->
     <!-- <script src="cordova/cordova.js"></script> -->
@@ -54,17 +55,36 @@
           </div>
 
           <!-- Events list -->
-          <div data-role="page" id="detail-page" data-title="Event detail">
+          <div data-role="page" id="detail-page" data-title="Event">
             <section id="eventdetail">
                 <div class="preview"></div>
                 <div class="event-content">
                     <p id="detail-title" class="xlarge-font"></p>
                     <p><span id="detail-date" class="event-date"></span></p>
                     <p><span id="detail-location" class="event-location"></span></p>
-                    <p><a id="detail-url" class="event-url" target="_blank" href="http://www.ubuntu.com/">Website</a></p>
                     <p id="detail-description"></p>
+                    <div class="inset">
+                      <div style="width: 200px; float:left; margin-right: 20px;">
+                        <button data-role="button">Website</button>
+                      </div>
+                      <div style="width: 200px; float:left; margin-right: 0px;">
+                        <button data-role="button">Twitter</button>
+                      </div>
+                    </div>
                 </div>
             </section>
+            <footer data-role="footer" class="revealed" style="display: block;">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#" id="action-calendar">
+                                <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/event-new.svg" alt="Back">
+                                <span>Add to Calendar</span>
+                            </a>
+                        </li>
+                   </ul>
+               </nav>
+            </footer>
           </div>
 
           </div>

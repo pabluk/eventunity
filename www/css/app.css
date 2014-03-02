@@ -34,13 +34,6 @@ span.event-location {
   font-weight: normal;
 }
 
-a.event-url {
-  padding: 0 0.5rem 0 1rem;
-  background: transparent url('../img/link.png') no-repeat left center;
-  background-size: 0.65rem;
-  font-weight: normal;
-}
-
 div.preview {
   width: 100%;
   height: 8rem;
@@ -56,4 +49,5 @@ div.preview {
 
 #detail-description {
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
