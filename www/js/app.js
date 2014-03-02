@@ -10,15 +10,16 @@ window.onload = function () {
     $.getJSON(eventunityAPI + "/communities/", function(data) {
         var community_list = UI.list('[id="communities"]');
         community_list.removeAllItems();
-        community_list.setHeader("Choose a community");
         $.each(data, function(i, community) {
-            community_list.append(
+            communityItem = community_list.append(
                 community.name,
                 null,
                 community.id,
                 function(target, community) {loadEvents(community);},
                 community
             );
+            $('a', communityItem).prepend('<aside><img src="img/community.svg"></aside>');
+            $('a', communityItem).append('<br><span class="small-font">' + community.events_count + ' events</span>');
         });
     });
 
@@ -27,15 +28,15 @@ window.onload = function () {
         var event_list = UI.list('[id="events"]');
         event_list.removeAllItems();
         $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/", function(data) {
-	        event_list.setHeader("Upcoming events for " + community.name);
             $.each(data, function(i, e) {
-                event_list.append(
+                eventItem = event_list.append(
                     e.title,
                     null,
                     e.id,
                     function(target, e) {loadEventDetail(e);},
                     e
                 );
+                $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span> <span class="event-location"> ' + e.location + '</span>');
             });
         });
 

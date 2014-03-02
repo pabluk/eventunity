@@ -8,6 +8,7 @@
 
     <!-- Ubuntu UI Style imports - Ambiance theme -->
     <link href="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css" />
+    <link href="css/app.css" rel="stylesheet" type="text/css" />
 
     <script src="file:///usr/share/javascript/jquery/jquery.min.js"></script>
     <!-- Ubuntu UI javascript imports - Ambiance theme -->
@@ -40,12 +41,16 @@
 
           <!-- Communities list -->
           <div data-role="page" id="main" data-title="Community">
-            <section data-role="list" id="communities"></section>
+            <section data-role="list" id="communities">
+                <header class="large-font">Choose a community</header>
+            </section>
           </div>
 
           <!-- Events list -->
           <div data-role="page" id="event-page" data-title="Events">
-            <section data-role="list" id="events"></section>
+            <section data-role="list" id="events">
+                <header class="large-font">Upcoming events</header>
+            </section>
           </div>
 
           <!-- Events list -->

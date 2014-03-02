@@ -1,0 +1,35 @@
+#communities ul li a {
+  line-height: 1.1rem;
+  padding-top: 0.5rem;
+  padding-left: 0rem;
+}
+
+#communities ul li a aside {
+  margin-right: 0.5rem;
+}
+
+[data-role="list"] aside {
+  top: 1.0rem;
+  width: 2.5rem;
+}
+
+#events ul li a {
+  line-height: 1.1rem;
+  padding-top: 0.5rem;
+  padding-left: 0rem;
+  font-weight: bold;
+}
+
+span.event-date {
+  padding: 0 0.5rem 0 1rem;
+  background: transparent url('../img/calendar.png') no-repeat left center;
+  background-size: 0.65rem;
+  font-weight: normal;
+}
+
+span.event-location {
+  padding: 0 0.5rem 0 1rem;
+  background: transparent url('../img/marker.png') no-repeat left center;
+  background-size: 0.65rem;
+  font-weight: normal;
+}
