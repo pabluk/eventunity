@@ -56,10 +56,14 @@
           <!-- Events list -->
           <div data-role="page" id="detail-page" data-title="Event detail">
             <section id="eventdetail">
-            <p id="detail-title"></p>
-            <p><span id="detail-date"></span><span id="detail-location"></span></p>
-            <a id="detail-url" target="_blank" href=""></a>
-            <p id="detail-description"></p>
+                <div class="preview"></div>
+                <div class="event-content">
+                    <p id="detail-title" class="xlarge-font"></p>
+                    <p><span id="detail-date" class="event-date"></span></p>
+                    <p><span id="detail-location" class="event-location"></span></p>
+                    <p><a id="detail-url" class="event-url" target="_blank" href="http://www.ubuntu.com/">Website</a></p>
+                    <p id="detail-description"></p>
+                </div>
             </section>
           </div>
 

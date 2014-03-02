@@ -18,7 +18,7 @@ window.onload = function () {
                 function(target, community) {loadEvents(community);},
                 community
             );
-            $('a', communityItem).prepend('<aside><img src="img/community.svg"></aside>');
+            $('a', communityItem).prepend('<aside><img src="' + community.logo_url + '"></aside>');
             $('a', communityItem).append('<br><span class="small-font">' + community.events_count + ' events</span>');
         });
     });

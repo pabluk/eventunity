@@ -33,3 +33,27 @@ span.event-location {
   background-size: 0.65rem;
   font-weight: normal;
 }
+
+a.event-url {
+  padding: 0 0.5rem 0 1rem;
+  background: transparent url('../img/link.png') no-repeat left center;
+  background-size: 0.65rem;
+  font-weight: normal;
+}
+
+div.preview {
+  width: 100%;
+  height: 8rem;
+  background-image: url('../img/event-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.event-content {
+  padding: 1rem;
+}
+
+#detail-description {
+  margin-top: 1rem;
+}
