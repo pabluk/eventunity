@@ -1,5 +1,5 @@
+import json
 from django.http import HttpResponse
-from django.utils import simplejson
 
 
 def json_response(func):
@@ -13,12 +13,12 @@ def json_response(func):
         if isinstance(objects, HttpResponse):
             return objects
         try:
-            data = simplejson.dumps(objects)
+            data = json.dumps(objects)
             if 'callback' in request.REQUEST:
                 # a jsonp response!
                 data = '%s(%s);' % (request.REQUEST['callback'], data)
                 return HttpResponse(data, "text/javascript")
         except:
-            data = simplejson.dumps(str(objects))
+            data = json.dumps(str(objects))
         return HttpResponse(data, "application/json")
     return decorator
