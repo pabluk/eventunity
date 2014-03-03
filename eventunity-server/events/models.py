@@ -15,9 +15,10 @@ class Community(models.Model):
         json_dict = {
             'id': self.id,
             'name': self.name,
-            'logo': self.logo.url
+            'logo': self.logo.url,
+            'events_count': self.event_set.count()
         }
-        return {'id': self.id, 'name': self.name, 'logo': self.logo.url}
+        return json_dict
 
 
 class Event(models.Model):
@@ -33,6 +34,7 @@ class Event(models.Model):
 
     def to_json_dict(self):
         json_dict = {
+            'id': self.id,
             'name': self.name,
             'community': self.community.to_json_dict(),
             'date': self.date.strftime("%A, %B %d, %Y"),
@@ -44,6 +46,7 @@ class Event(models.Model):
 
     def to_json_dict_reduced(self):
         json_dict = {
+            'id': self.id,
             'name': self.name,
             'date': self.date.strftime("%A, %B %d, %Y"),
             'location': self.location,
