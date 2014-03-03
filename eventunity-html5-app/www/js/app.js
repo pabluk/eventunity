@@ -2,7 +2,7 @@
  * Wait before the DOM has been loaded before initializing the Ubuntu UI layer
  */
 window.onload = function () {
-    var eventunityAPI = 'http://eventunity.debugstack.com';
+    var eventunityAPI = 'http://eventunity.seminar.io/api';
     var UI = new UbuntuUI();
     UI.init();
     UI.pagestack.push("main");
@@ -18,7 +18,7 @@ window.onload = function () {
                 function(target, community) {loadEvents(community);},
                 community
             );
-            $('a', communityItem).prepend('<aside><img src="' + community.logo_url + '"></aside>');
+            $('a', communityItem).prepend('<aside><img src="' + community.logo + '"></aside>');
             $('a', communityItem).append('<br><span class="small-font">' + community.events_count + ' events</span>');
         });
     });
@@ -30,7 +30,7 @@ window.onload = function () {
         $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/", function(data) {
             $.each(data, function(i, e) {
                 eventItem = event_list.append(
-                    e.title,
+                    e.name,
                     null,
                     e.id,
                     function(target, e) {loadEventDetail(e);},
@@ -44,12 +44,12 @@ window.onload = function () {
 
     function loadEventDetail(e) {
         UI.pagestack.push("detail-page")
-        $('#detail-title').text('');
+        $('#detail-name').text('');
         $('#detail-date').text('');
         $('#detail-location').text('');
         $('#detail-description').text('');
         $.getJSON(eventunityAPI + "/events/" + e.id + "/detail/", function(detail) {
-            $('#detail-title').text(detail.title);
+            $('#detail-name').text(detail.name);
             $('#detail-date').text(detail.date);
             $('#detail-location').text(detail.location);
             $('#detail-description').text(detail.description);
