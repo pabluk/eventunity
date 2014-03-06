@@ -7,11 +7,27 @@ window.onload = function () {
     UI.init();
     UI.pagestack.push("main");
 
-    $.getJSON(eventunityAPI + "/communities/?callback=?", function(data) {
-        var community_list = UI.list('[id="communities"]');
-        community_list.removeAllItems();
-        $.each(data, function(i, community) {
-            communityItem = community_list.append(
+    var locationsOS = UI.optionselector("locations");
+
+    $.getJSON(eventunityAPI + "/home/?callback=?", function(data) {
+        var localEventList = UI.list('[id="local-events"]');
+        var communityList = UI.list('[id="communities"]');
+
+        localEventList.removeAllItems();
+        $.each(data.events, function(i, e) {
+            eventItem = localEventList.append(
+                e.name,
+                null,
+                e.id,
+                function(target, e) {loadEventDetail(e);},
+                e
+            );
+            $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
+        });
+
+        communityList.removeAllItems();
+        $.each(data.communities, function(i, community) {
+            communityItem = communityList.append(
                 community.name,
                 null,
                 community.id,
@@ -36,7 +52,7 @@ window.onload = function () {
                     function(target, e) {loadEventDetail(e);},
                     e
                 );
-                $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span> <span class="event-location"> ' + e.location + '</span>');
+                $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
             });
         });
 

@@ -13,11 +13,15 @@
   width: 2.5rem;
 }
 
-#events ul li a {
+.event-list ul li a {
   line-height: 1.1rem;
   padding-top: 0.5rem;
   padding-left: 0rem;
   font-weight: bold;
+}
+
+.event-list ul li {
+  height: 4.5rem;
 }
 
 span.event-date {

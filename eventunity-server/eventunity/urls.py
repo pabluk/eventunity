@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^$', 'events.views.index', name='index'),
 
+    url(r'^api/home/$', 'events.views.home', name='home'),
     url(r'^api/communities/$', 'events.views.communities', name='communities'),
     url(r'^api/communities/(?P<community_id>\d+)/events/$', 'events.views.events_by_community', name='events_by_community'),
     url(r'^api/events/$', 'events.views.events', name='events'),

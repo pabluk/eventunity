@@ -21,6 +21,7 @@
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/option-selector.js"></script>
 
     <!-- Cordova platform API access - Uncomment this to have access to the Javascript APIs -->
     <!-- <script src="cordova/cordova.js"></script> -->
@@ -41,15 +42,47 @@
           <div data-role="pagestack">
 
           <!-- Communities list -->
-          <div data-role="page" id="main" data-title="Community">
-            <section data-role="list" id="communities">
-                <header class="large-font">Choose a community</header>
+          <div data-role="page" id="main" data-title="Eventunity">
+            <section data-role="option-selector" id="locations" style="margin: 1rem; width: auto;">
+                <ul>
+                    <li data-value="0">
+                        <p>Paris, France</p>
+                    </li>
+                    <li data-value="1">
+                        <p>London, United Kingdom</p>
+                    </li>
+                </ul>
             </section>
+            <section data-role="list" id="local-events" class="event-list">
+                <header></header>
+            </section>
+            <div class="inset">
+              <div style="margin: 1rem; margin-top: 0;">
+                <button data-role="button" style="">Show more events</button>
+              </div>
+            </div>
+
+            <section data-role="list" id="communities">
+                <header class="large-font">Events by community</header>
+            </section>
+
+            <footer data-role="footer" id="toolbar-main">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#" id="action-add-location">
+                                <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/language-chooser.svg" alt="Locations">
+                                <span>Locations</span>
+                            </a>
+                        </li>
+                   </ul>
+               </nav>
+            </footer>
           </div>
 
           <!-- Events list -->
           <div data-role="page" id="event-page" data-title="Events">
-            <section data-role="list" id="events">
+            <section data-role="list" id="events" class="event-list">
                 <header class="large-font">Upcoming events</header>
             </section>
           </div>
