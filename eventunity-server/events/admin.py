@@ -1,8 +1,8 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 from events.models import Community, Event
 
 
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(admin.GeoModelAdmin):
     list_display = ('community', 'name', 'location', 'date')
     list_display_links = ('name',)
     list_filter = ('community__name',)

@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 
 
 class Community(models.Model):
@@ -28,6 +28,8 @@ class Event(models.Model):
     location = models.CharField(max_length=200)
     url = models.URLField(max_length=1024)
     description = models.TextField()
+    coordinates = models.PointField(blank=True, null=True)
+    objects = models.GeoManager()
 
     def __unicode__(self):
         return self.name

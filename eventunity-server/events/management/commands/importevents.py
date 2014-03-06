@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.gis.geos import Point
 from django.core.management.base import BaseCommand, CommandError
 from events.models import Community, Event
 
@@ -22,6 +23,7 @@ class Command(BaseCommand):
                 Event.objects.get(community=community, url=data['url'])
             except Event.DoesNotExist:
                 data['community'] = community
+                data['coordinates'] = Point(data['coordinates']) if data['coordinates'] else None
                 event = Event(**data)
                 event.save()
                 count += 1
