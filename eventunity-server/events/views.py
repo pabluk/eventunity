@@ -1,5 +1,7 @@
 import datetime
 
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 from django.shortcuts import render_to_response, get_object_or_404
 
 from events.models import Community, Event
@@ -33,6 +35,15 @@ def events_by_community(request, community_id):
     community = get_object_or_404(Community, pk=community_id)
     today = datetime.date.today()
     events = Event.objects.filter(community=community, date__gte=today).order_by('date')
+    return [e.to_json_dict_reduced() for e in events]
+
+
+@json_response
+def events_by_location(request, coordinates, distance):
+    lat, lng = coordinates.split(',')
+    location = Point([float(lng), float(lat)])
+    today = datetime.date.today()
+    events = Event.objects.filter(coordinates__distance_lte=(location, D(km=distance)), date__gte=today).order_by('date')
     return [e.to_json_dict_reduced() for e in events]
 
 
