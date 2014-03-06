@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.gis.db import models
 
 
@@ -12,11 +14,12 @@ class Community(models.Model):
         return self.name
 
     def to_json_dict(self):
+        today = datetime.date.today()
         json_dict = {
             'id': self.id,
             'name': self.name,
             'logo': self.logo.url,
-            'events_count': self.event_set.count()
+            'events_count': self.event_set.filter(date__gte=today).count()
         }
         return json_dict
 
