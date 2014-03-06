@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^api/communities/$', 'events.views.communities', name='communities'),
     url(r'^api/communities/(?P<community_id>\d+)/events/$', 'events.views.events_by_community', name='events_by_community'),
     url(r'^api/events/$', 'events.views.events', name='events'),
-    url(r'^api/events/(?P<event_id>\d+)/detail/$', 'events.views.event_detail', name='event_detail'),
+    url(r'^api/events/(?P<event_id>\d+)/$', 'events.views.event_detail', name='event_detail'),
 
     url(r'^admin/', include(admin.site.urls)),
 
