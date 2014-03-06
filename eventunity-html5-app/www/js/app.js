@@ -7,7 +7,7 @@ window.onload = function () {
     UI.init();
     UI.pagestack.push("main");
 
-    $.getJSON(eventunityAPI + "/communities/", function(data) {
+    $.getJSON(eventunityAPI + "/communities/?callback=?", function(data) {
         var community_list = UI.list('[id="communities"]');
         community_list.removeAllItems();
         $.each(data, function(i, community) {
@@ -27,7 +27,7 @@ window.onload = function () {
         UI.pagestack.push("event-page")
         var event_list = UI.list('[id="events"]');
         event_list.removeAllItems();
-        $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/", function(data) {
+        $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/?callback=?", function(data) {
             $.each(data, function(i, e) {
                 eventItem = event_list.append(
                     e.name,
@@ -48,7 +48,7 @@ window.onload = function () {
         $('#detail-date').text('');
         $('#detail-location').text('');
         $('#detail-description').text('');
-        $.getJSON(eventunityAPI + "/events/" + e.id + "/detail/", function(detail) {
+        $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?", function(detail) {
             $('#detail-name').text(detail.name);
             $('#detail-date').text(detail.date);
             $('#detail-location').text(detail.location);
