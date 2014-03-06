@@ -8,6 +8,24 @@ window.onload = function () {
     UI.pagestack.push("main");
 
     var locationsOS = UI.optionselector("locations");
+    locationsOS.onClicked(function (selected) {
+        console.log("optionselector1 values: " + selected.values);
+        $.getJSON(eventunityAPI + "/events/location/" + selected.values +"/?callback=?", function(data) {
+            console.log(data);
+            var localEventList = UI.list('[id="local-events"]');
+            localEventList.removeAllItems();
+            $.each(data, function(i, e) {
+                eventItem = localEventList.append(
+                    e.name,
+                    null,
+                    e.id,
+                    function(target, e) {loadEventDetail(e);},
+                    e
+                );
+                $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
+            });
+        });
+    });
 
     $.getJSON(eventunityAPI + "/home/?callback=?", function(data) {
         var localEventList = UI.list('[id="local-events"]');

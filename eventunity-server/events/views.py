@@ -44,7 +44,7 @@ def events_by_location(request, coordinates, distance):
     location = Point([float(lng), float(lat)])
     today = datetime.date.today()
     events = Event.objects.filter(coordinates__distance_lte=(location, D(km=distance)), date__gte=today).order_by('date')
-    return [e.to_json_dict_reduced() for e in events]
+    return [e.to_json_dict_reduced() for e in events[:5]]
 
 
 @json_response
