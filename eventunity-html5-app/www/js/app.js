@@ -150,15 +150,17 @@ window.onload = function () {
 
     function loadEventDetail(e) {
         UI.pagestack.push("detail-page")
-        $('#detail-name').text('');
-        $('#detail-date').text('');
-        $('#detail-location').text('');
+        $('#detail-name').text(e.name);
+        $('#detail-date').text(e.date);
+        $('#detail-location').text(e.location);
         $('#detail-description').text('');
-        $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?", function(detail) {
-            $('#detail-name').text(detail.name);
-            $('#detail-date').text(detail.date);
-            $('#detail-location').text(detail.location);
+        $('#event-detail-progress').show();
+        $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?")
+        .done(function(detail) {
             $('#detail-description').text(detail.description);
+        })
+        .always(function() {
+            $('#event-detail-progress').hide();
         });
     }
 
