@@ -141,7 +141,7 @@ window.onload = function () {
     function loadEventsByCommunity(community) {
         var eventList = UI.list('[id="events"]');
         eventList.setHeader(community.name);
-        url = eventunityAPI + "/communities/" + community.id +"/events/?callback=?";
+        url = eventunityAPI + "/events/community/" + community.id +"/?callback=?";
         populateEventsPage(url, eventList)
     }
 
