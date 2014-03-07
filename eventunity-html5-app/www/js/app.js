@@ -27,6 +27,10 @@ window.onload = function () {
         fetchHomeData(coordinates);
     })
 
+    UI.button('button-website').click(function (e) {
+        console.log("Open website " + e.target.value);
+        window.open(e.target.value, '_blank');
+    });
 
     function restoreLocationsOptionSelector() {
         locations = JSON.parse(localStorage.getItem("locations"));
@@ -150,18 +154,23 @@ window.onload = function () {
 
     function loadEventDetail(e) {
         UI.pagestack.push("detail-page")
+
         $('#detail-name').text(e.name);
         $('#detail-date').text(e.date);
         $('#detail-location').text(e.location);
         $('#detail-description').text('');
         $('#event-detail-progress').show();
+        $('#button-website').hide();
         $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?")
         .done(function(detail) {
             $('#detail-description').text(detail.description);
+            $('#button-website').val(detail.url);
         })
         .always(function() {
             $('#event-detail-progress').hide();
+            $('#button-website').show();
         });
+
     }
 
     // Add an event listener that is pending on the initialization
