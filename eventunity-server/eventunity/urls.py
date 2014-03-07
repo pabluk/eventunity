@@ -12,7 +12,9 @@ urlpatterns = patterns('',
 
     url(r'^$', 'events.views.index', name='index'),
 
-    url(r'^api/home/$', 'events.views.home', name='home'),
+    url(r'^api/home/$', 'events.views.home', {'coordinates': None, 'distance': 0}),
+    url(r'^api/home/(?P<coordinates>[\d\-\.,]+)/$', 'events.views.home', {'distance': 500}),
+    url(r'^api/home/(?P<coordinates>[\d\-\.,]+)/(?P<distance>\d+)/$', 'events.views.home'),
     url(r'^api/communities/$', 'events.views.communities', name='communities'),
     url(r'^api/communities/(?P<community_id>\d+)/events/$', 'events.views.events_by_community', name='events_by_community'),
     url(r'^api/events/$', 'events.views.events', name='events'),

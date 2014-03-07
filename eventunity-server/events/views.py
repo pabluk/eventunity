@@ -13,21 +13,40 @@ def index(request):
 
 
 @json_response
-def home(request):
+def home(request, coordinates, distance):
     today = datetime.date.today()
-    events_qs = Event.objects.filter(date__gte=today).order_by('date')
-    events = [e.to_json_dict_reduced() for e in events_qs[:5]]
+
+    if coordinates:
+        lat, lng = coordinates.split(',')
+        location = Point([float(lng), float(lat)])
+        events_qs = Event.objects.filter(coordinates__distance_lte=(location, D(km=distance)), date__gte=today).order_by('date')
+        events_total = events_qs.count()
+        events = [e.to_json_dict_reduced() for e in events_qs[:5]]
+    else:
+        events_total = 0
+        events = []
+
     communities = [c.to_json_dict() for c in Community.objects.all()]
+
     data = {
         'events': events,
+        'events_total': events_total,
         'communities': communities,
     }
     return data
+
 
 @json_response
 def communities(request):
     communities = Community.objects.all()
     return [c.to_json_dict() for c in communities]
+
+
+@json_response
+def events(request):
+    today = datetime.date.today()
+    events = Event.objects.filter(date__gte=today).order_by('date')
+    return [e.to_json_dict() for e in events]
 
 
 @json_response
@@ -44,14 +63,7 @@ def events_by_location(request, coordinates, distance):
     location = Point([float(lng), float(lat)])
     today = datetime.date.today()
     events = Event.objects.filter(coordinates__distance_lte=(location, D(km=distance)), date__gte=today).order_by('date')
-    return [e.to_json_dict_reduced() for e in events[:5]]
-
-
-@json_response
-def events(request):
-    today = datetime.date.today()
-    events = Event.objects.filter(date__gte=today).order_by('date')
-    return [e.to_json_dict() for e in events]
+    return [e.to_json_dict_reduced() for e in events]
 
 
 @json_response
