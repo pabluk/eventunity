@@ -126,8 +126,11 @@ window.onload = function () {
     function loadEvents(community) {
         UI.pagestack.push("event-page")
         var event_list = UI.list('[id="events"]');
+        event_list.setHeader(community.name);
         event_list.removeAllItems();
-        $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/?callback=?", function(data) {
+        $('#event-list-progress').show();
+        $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/?callback=?")
+        .done(function(data) {
             $.each(data, function(i, e) {
                 eventItem = event_list.append(
                     e.name,
@@ -138,6 +141,9 @@ window.onload = function () {
                 );
                 $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
             });
+        })
+        .always(function() {
+            $('#event-list-progress').hide();
         });
 
     }
