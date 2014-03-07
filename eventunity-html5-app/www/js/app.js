@@ -7,6 +7,7 @@ window.onload = function () {
 
     var locations;
     var locationsOptionSelector;
+    var currentCoordinates;
     var localEvents;
     var localEventList = UI.list('[id="local-events"]');
     var communities;
@@ -20,17 +21,25 @@ window.onload = function () {
     restoreCommunities();
 
     // Fetch updated data
-    fetchHomeData(locations[0].coordinates);
+    fetchHomeData(currentCoordinates);
 
     locationsOptionSelector.onClicked(function (e) {
-        coordinates = e.values;
-        fetchHomeData(coordinates);
+        currentCoordinates = e.values;
+        fetchHomeData(currentCoordinates);
+        $('#local-events-more').val(currentCoordinates);
     })
+
+    UI.button('local-events-more').click(function (e) {
+        loadEventsByLocation(e.target.value);
+    });
 
     UI.button('button-website').click(function (e) {
         console.log("Open website " + e.target.value);
         window.open(e.target.value, '_blank');
     });
+
+
+    /* Functions and callbacks */
 
     function restoreLocationsOptionSelector() {
         locations = JSON.parse(localStorage.getItem("locations"));
@@ -48,6 +57,8 @@ window.onload = function () {
             $('#locations ul').append('<li data-value="' + loc.coordinates + '"><p>' + loc.name + '</p></li>');
         });
         locationsOptionSelector = UI.optionselector("locations");
+        currentCoordinates = locations[0].coordinates;
+        $('#local-events-more').val(currentCoordinates);
     }
 
     function restoreLocalEvents() {
@@ -97,7 +108,7 @@ window.onload = function () {
                 community.name,
                 null,
                 community.id,
-                function(target, community) {loadEvents(community);},
+                function(target, community) {loadEventsByCommunity(community);},
                 community
             );
             $('a', communityItem).prepend('<aside><img src="' + community.logo + '"></aside>');
@@ -127,16 +138,28 @@ window.onload = function () {
         });
     }
 
-    function loadEvents(community) {
+    function loadEventsByCommunity(community) {
+        var eventList = UI.list('[id="events"]');
+        eventList.setHeader(community.name);
+        url = eventunityAPI + "/communities/" + community.id +"/events/?callback=?";
+        populateEventsPage(url, eventList)
+    }
+
+    function loadEventsByLocation(coordinates) {
+        var eventList = UI.list('[id="events"]');
+        eventList.setHeader("Events by location");
+        url = eventunityAPI + "/events/location/" + coordinates +"/?callback=?";
+        populateEventsPage(url, eventList)
+    }
+
+    function populateEventsPage(url, eventList) {
         UI.pagestack.push("event-page")
-        var event_list = UI.list('[id="events"]');
-        event_list.setHeader(community.name);
-        event_list.removeAllItems();
+        eventList.removeAllItems();
         $('#event-list-progress').show();
-        $.getJSON(eventunityAPI + "/communities/" + community.id +"/events/?callback=?")
+        $.getJSON(url)
         .done(function(data) {
             $.each(data, function(i, e) {
-                eventItem = event_list.append(
+                eventItem = eventList.append(
                     e.name,
                     null,
                     e.id,
@@ -149,7 +172,6 @@ window.onload = function () {
         .always(function() {
             $('#event-list-progress').hide();
         });
-
     }
 
     function loadEventDetail(e) {
