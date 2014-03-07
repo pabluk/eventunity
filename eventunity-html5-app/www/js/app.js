@@ -158,17 +158,15 @@ window.onload = function () {
         $('#detail-name').text(e.name);
         $('#detail-date').text(e.date);
         $('#detail-location').text(e.location);
+        $('#button-website').val(e.url);
         $('#detail-description').text('');
         $('#event-detail-progress').show();
-        $('#button-website').hide();
         $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?")
         .done(function(detail) {
             $('#detail-description').text(detail.description);
-            $('#button-website').val(detail.url);
         })
         .always(function() {
             $('#event-detail-progress').hide();
-            $('#button-website').show();
         });
 
     }

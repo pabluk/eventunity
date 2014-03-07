@@ -55,5 +55,6 @@ class Event(models.Model):
             'name': self.name,
             'date': self.date.strftime("%A, %B %d, %Y"),
             'location': self.location,
+            'url': self.url
         }
         return json_dict
