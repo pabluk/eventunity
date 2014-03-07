@@ -4,17 +4,67 @@
 window.onload = function () {
     var eventunityAPI = 'http://eventunity.seminar.io/api';
     var UI = new UbuntuUI();
+
+    var locations;
+    var locationsOptionSelector;
+    var localEvents;
+    var localEventList = UI.list('[id="local-events"]');
+    var communities;
+    var communityList = UI.list('[id="communities"]');
+
     UI.init();
     UI.pagestack.push("main");
 
-    var locationsOS = UI.optionselector("locations");
-    locationsOS.onClicked(function (selected) {
-        console.log("optionselector1 values: " + selected.values);
-        $.getJSON(eventunityAPI + "/events/location/" + selected.values +"/?callback=?", function(data) {
-            console.log(data);
-            var localEventList = UI.list('[id="local-events"]');
-            localEventList.removeAllItems();
-            $.each(data, function(i, e) {
+    restoreLocationsOptionSelector();
+    restoreLocalEvents();
+    restoreCommunities();
+
+    // Fetch updated data
+    fetchHomeData(locations[0].coordinates);
+
+    locationsOptionSelector.onClicked(function (e) {
+        coordinates = e.values;
+        fetchHomeData(coordinates);
+    })
+
+
+    function restoreLocationsOptionSelector() {
+        locations = JSON.parse(localStorage.getItem("locations"));
+        if (!locations) {
+            // Set default locations
+            locations = [
+                {"name":"San Francisco, CA, United States", "coordinates": "37.7577,-122.4376"},
+                {"name":"London, United Kingdom", "coordinates": "51.5286416,-0.1015987"},
+                {"name":"Paris, France", "coordinates": "48.8588589,2.3470599"},
+            ];
+            localStorage.setItem("locations", JSON.stringify(locations));
+        }
+        // Populate option selector
+        $.each(locations, function(i, loc) {
+            $('#locations ul').append('<li data-value="' + loc.coordinates + '"><p>' + loc.name + '</p></li>');
+        });
+        locationsOptionSelector = UI.optionselector("locations");
+    }
+
+    function restoreLocalEvents() {
+        localEvents = JSON.parse(localStorage.getItem("localevents"));
+        if (localEvents) {
+            // Populate event list
+            populateLocalEvents();
+        }
+    }
+
+    function restoreCommunities() {
+        communities = JSON.parse(localStorage.getItem("communities"));
+        if (communities) {
+            populateCommunities();
+        }
+    }
+
+    function populateLocalEvents() {
+        localEventList.removeAllItems();
+        if (localEvents.events.length > 0) {
+            $.each(localEvents.events, function(i, e) {
                 eventItem = localEventList.append(
                     e.name,
                     null,
@@ -24,27 +74,21 @@ window.onload = function () {
                 );
                 $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
             });
-        });
-    });
+            if (localEvents.events_total > localEvents.events.length) {
+                $('#local-events-more').show();
+            } else {
+                $('#local-events-more').hide();
+            }
+            $('#local-events-msg').hide();
+        } else {
+            $('#local-events-msg').show();
+            $('#local-events-more').hide();
+        }
+    }
 
-    $.getJSON(eventunityAPI + "/home/?callback=?", function(data) {
-        var localEventList = UI.list('[id="local-events"]');
-        var communityList = UI.list('[id="communities"]');
-
-        localEventList.removeAllItems();
-        $.each(data.events, function(i, e) {
-            eventItem = localEventList.append(
-                e.name,
-                null,
-                e.id,
-                function(target, e) {loadEventDetail(e);},
-                e
-            );
-            $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
-        });
-
+    function populateCommunities() {
         communityList.removeAllItems();
-        $.each(data.communities, function(i, community) {
+        $.each(communities, function(i, community) {
             communityItem = communityList.append(
                 community.name,
                 null,
@@ -55,7 +99,29 @@ window.onload = function () {
             $('a', communityItem).prepend('<aside><img src="' + community.logo + '"></aside>');
             $('a', communityItem).append('<br><span class="small-font">' + community.events_count + ' events</span>');
         });
-    });
+    }
+
+    function fetchHomeData(coordinates) {
+        $('#locations ul li.closed').addClass("closed-progress");
+        $.getJSON(eventunityAPI + "/home/" + coordinates + "/?callback=?")
+        .done(function(data) {
+            // Only update when events change
+            if (JSON.stringify(localEvents) !== JSON.stringify(data.local_events)) {
+                localStorage.setItem("localevents", JSON.stringify(data.local_events));
+                localEvents = data.local_events;
+                populateLocalEvents();
+            }
+            // Only update when communities change
+            if (JSON.stringify(communities) !== JSON.stringify(data.communities)) {
+                localStorage.setItem("communities", JSON.stringify(data.communities));
+                communities = data.communities;
+                populateCommunities();
+            }
+        })
+        .always(function() {
+            $('#locations ul li.closed').removeClass("closed-progress");
+        });
+    }
 
     function loadEvents(community) {
         UI.pagestack.push("event-page")
@@ -97,4 +163,3 @@ window.onload = function () {
             console.log('Platform layer API ready');
     }, false);
 };
-

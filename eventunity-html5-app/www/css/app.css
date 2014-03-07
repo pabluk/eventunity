@@ -55,3 +55,7 @@ div.preview {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+[data-role="option-selector"] li.closed-progress:after {
+  background: transparent url(../img/spinner.gif) no-repeat center center;
+}

@@ -44,21 +44,15 @@
           <!-- Communities list -->
           <div data-role="page" id="main" data-title="Eventunity">
             <section data-role="option-selector" id="locations" style="margin: 1rem; width: auto;">
-                <ul>
-                    <li data-value="51.5286416,-0.1015987"><p>London, United Kingdom</p></li>
-                    <li data-value="48.8588589,2.3470599"><p>Paris, France</p></li>
-                    <li data-value="28.6454415,77.0907573"><p>New Delhi, India</p></li>
-                    <li data-value="-23.6824124,-46.5952992"><p>Sao Paulo, Brazil</p></li>
-                    <li data-value="52.5075419,13.4261419"><p>Berlin, Germany</p></li>
-                    <li data-value="37.7577,-122.4376"><p>San Francisco, CA, United States</p></li>
-                </ul>
+                <ul></ul>
             </section>
             <section data-role="list" id="local-events" class="event-list">
                 <header></header>
             </section>
             <div class="inset">
-              <div style="margin: 1rem; margin-top: 0;">
-                <button data-role="button" style="">Show more events</button>
+              <div style="margin: 1rem; margin-top: 0; text-align: center;">
+                <button id="local-events-more" data-role="button" style="display: none;">Show more events</button>
+                <p id="local-events-msg" style="display: none;">Sorry, no events found.</p>
               </div>
             </div>
 
