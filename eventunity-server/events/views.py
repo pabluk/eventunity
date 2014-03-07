@@ -16,21 +16,18 @@ def index(request):
 def home(request, coordinates, distance):
     today = datetime.date.today()
 
+    local_events = {'events': [], 'events_total': 0}
     if coordinates:
         lat, lng = coordinates.split(',')
         location = Point([float(lng), float(lat)])
         events_qs = Event.objects.filter(coordinates__distance_lte=(location, D(km=distance)), date__gte=today).order_by('date')
-        events_total = events_qs.count()
-        events = [e.to_json_dict_reduced() for e in events_qs[:5]]
-    else:
-        events_total = 0
-        events = []
+        local_events['events'] = [e.to_json_dict_reduced() for e in events_qs[:5]]
+        local_events['events_total'] = events_qs.count()
 
     communities = [c.to_json_dict() for c in Community.objects.all()]
 
     data = {
-        'events': events,
-        'events_total': events_total,
+        'local_events': local_events,
         'communities': communities,
     }
     return data
