@@ -5,7 +5,7 @@ from django.contrib.gis.db import models
 
 class Community(models.Model):
     name = models.CharField(max_length=200)
-    logo = models.ImageField(upload_to='logos')
+    logo = models.FileField(upload_to='logos')
 
     class Meta:
         verbose_name_plural = 'communities'
