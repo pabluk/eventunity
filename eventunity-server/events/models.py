@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.gis.db import models
+from django.template.defaultfilters import linebreaksbr
 
 
 class Community(models.Model):
@@ -45,7 +46,7 @@ class Event(models.Model):
             'date': self.date.strftime("%A, %B %d, %Y"),
             'location': self.location,
             'url': self.url,
-            'description': self.description
+            'description': linebreaksbr(self.description)
         }
         return json_dict
 

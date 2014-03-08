@@ -186,11 +186,11 @@ window.onload = function () {
         $('#detail-date').text(e.date);
         $('#detail-location').text(e.location);
         $('#button-website').val(e.url);
-        $('#detail-description').text('');
+        $('#detail-description').html('');
         $('#event-detail-progress').show();
         $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?")
         .done(function(detail) {
-            $('#detail-description').text(detail.description);
+            $('#detail-description').html(detail.description);
         })
         .always(function() {
             $('#event-detail-progress').hide();
