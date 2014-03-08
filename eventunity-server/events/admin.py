@@ -23,7 +23,7 @@ class EventDateFilter(SimpleListFilter):
         if self.value() == 'expired':
             return queryset.filter(date__lt=today)
 
-class EventAdmin(admin.GeoModelAdmin):
+class EventAdmin(admin.OSMGeoAdmin):
     list_display = ('community', 'name', 'date', 'location', 'coordinates')
     list_display_links = ('name',)
     list_filter = ('community__name', EventDateFilter)
