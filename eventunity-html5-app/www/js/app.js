@@ -156,18 +156,23 @@ window.onload = function () {
         UI.pagestack.push("event-page")
         eventList.removeAllItems();
         $('#event-list-progress').show();
+        $('#event-list-msg').hide();
         $.getJSON(url)
         .done(function(data) {
-            $.each(data, function(i, e) {
-                eventItem = eventList.append(
-                    e.name,
-                    null,
-                    e.id,
-                    function(target, e) {loadEventDetail(e);},
-                    e
-                );
-                $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
-            });
+            if (data.length > 0) {
+                $.each(data, function(i, e) {
+                    eventItem = eventList.append(
+                        e.name,
+                        null,
+                        e.id,
+                        function(target, e) {loadEventDetail(e);},
+                        e
+                    );
+                    $('a', eventItem).append('<br><span class="event-date"> ' + e.date + '</span><br><span class="event-location"> ' + e.location + '</span>');
+                });
+            } else {
+                $('#event-list-msg').show();
+            }
         })
         .always(function() {
             $('#event-list-progress').hide();
