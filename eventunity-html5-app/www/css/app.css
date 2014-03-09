@@ -38,15 +38,6 @@ span.event-location {
   font-weight: normal;
 }
 
-div.preview {
-  width: 100%;
-  height: 8rem;
-  background-image: url('../img/event-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .event-content {
   padding: 1rem;
 }
@@ -59,3 +50,5 @@ div.preview {
 [data-role="option-selector"] li.closed-progress:after {
   background: transparent url(../img/spinner.gif) no-repeat center center;
 }
+
+#map { height: 8rem;}

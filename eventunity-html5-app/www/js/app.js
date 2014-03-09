@@ -5,6 +5,11 @@ window.onload = function () {
     var eventunityAPI = 'http://eventunity.seminar.io/api';
     var UI = new UbuntuUI();
 
+    var marker;
+    var map = L.map('map', {zoomControl: false, attributionControl: false});
+    map.setZoom(13);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(map);
+
     var locations;
     var locationsOptionSelector;
     var currentCoordinates;
@@ -46,9 +51,9 @@ window.onload = function () {
         if (!locations) {
             // Set default locations
             locations = [
+                {"name":"Paris, France", "coordinates": "48.8588589,2.3470599"},
                 {"name":"San Francisco, CA, United States", "coordinates": "37.7577,-122.4376"},
                 {"name":"London, United Kingdom", "coordinates": "51.5286416,-0.1015987"},
-                {"name":"Paris, France", "coordinates": "48.8588589,2.3470599"},
             ];
             localStorage.setItem("locations", JSON.stringify(locations));
         }
@@ -118,7 +123,7 @@ window.onload = function () {
 
     function fetchHomeData(coordinates) {
         $('#locations ul li.closed').addClass("closed-progress");
-        $.getJSON(eventunityAPI + "/home/" + coordinates + "/?callback=?")
+        $.getJSON(eventunityAPI + "/home/" + coordinates + "/200/?callback=?")
         .done(function(data) {
             // Only update when events change
             if (JSON.stringify(localEvents) !== JSON.stringify(data.local_events)) {
@@ -191,6 +196,14 @@ window.onload = function () {
         $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?")
         .done(function(detail) {
             $('#detail-description').html(detail.description);
+            if (!marker) {
+                map.invalidateSize();
+                marker = L.marker(detail.coordinates).addTo(map);
+            } else {
+                marker.setLatLng(detail.coordinates);
+                marker.update();
+            }
+            map.setView(detail.coordinates);
         })
         .always(function() {
             $('#event-detail-progress').hide();

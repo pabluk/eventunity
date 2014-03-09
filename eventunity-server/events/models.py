@@ -45,6 +45,7 @@ class Event(models.Model):
             'community': self.community.to_json_dict(),
             'date': self.date.strftime("%A, %B %d, %Y"),
             'location': self.location,
+            'coordinates': self.coordinates.coords[::-1],
             'url': self.url,
             'description': linebreaksbr(self.description)
         }
