@@ -51,4 +51,20 @@ span.event-location {
   background: transparent url(../img/spinner.gif) no-repeat center center;
 }
 
-#map { height: 8rem;}
+#map-location {
+  height: 10rem;
+}
+
+#map-event {
+  height: 8rem;
+}
+
+#locations-admin ul li {
+  padding-left: 0px;
+}
+
+#locations-admin ul li a::after {
+  background: transparent url(/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/edit-clear.svg) no-repeat 0rem 0rem;
+  background-size: cover;
+  right: 1rem;
+}

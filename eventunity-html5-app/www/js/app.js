@@ -2,16 +2,24 @@
  * Wait before the DOM has been loaded before initializing the Ubuntu UI layer
  */
 window.onload = function () {
-    var eventunityAPI = 'http://eventunity.seminar.io/api';
+    //var eventunityAPI = 'http://eventunity.seminar.io/api';
+    var eventunityAPI = 'http://localhost:8000/api';
     var UI = new UbuntuUI();
 
-    var marker;
-    var map = L.map('map', {zoomControl: false, attributionControl: false});
-    map.setZoom(13);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(map);
+    var markerEvent;
+    var mapEvent = L.map('map-event', {zoomControl: false, attributionControl: false});
+    mapEvent.setZoom(13);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(mapEvent);
+
+    var markerLocation;
+    var mapLocation = L.map('map-location', {zoomControl: false, attributionControl: false});
+    mapLocation.setZoom(13);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(mapLocation);
 
     var locations;
     var locationsOptionSelector;
+    var locationsAdminList = UI.list('[id="locations-admin"]');
+    var locationNew;
     var currentCoordinates;
     var localEvents;
     var localEventList = UI.list('[id="local-events"]');
@@ -43,6 +51,47 @@ window.onload = function () {
         window.open(e.target.value, '_blank');
     });
 
+    $('#action-location-admin').click(function () {
+        UI.pagestack.push("location-page")
+            updateMapMarker(mapLocation, markerLocation);
+            populateLocationsAdminList();
+    });
+
+    UI.button('location-search').click(function () {
+        var name = $('#location-name').val();
+
+        $('#location-search').addClass("negative");
+        $.getJSON(eventunityAPI + "/locations/" + name + "/?callback=?")
+        .done(function(data) {
+            if (data.coordinates) {
+                locationNew = data;
+                locationNew.name = name; // Set name given by user
+                updateMapMarker(mapLocation, markerLocation, locationNew.coordinates);
+                $('#location-add').removeClass("negative");
+            } else {
+                locationNew = null;
+                $('#location-add').addClass("negative");
+            }
+        })
+        .always(function() {
+            $('#location-search').removeClass("negative");
+        });
+
+    });
+
+    UI.button('location-add').click(function () {
+        if (locationNew) {
+            locations.unshift(locationNew);
+            localStorage.setItem("locations", JSON.stringify(locations));
+            populateLocationsAdminList();
+            restoreLocationsOptionSelector();
+            fetchHomeData(currentCoordinates);
+
+            locationNew = null;
+            $('#location-name').val('');
+            $('#location-add').addClass("negative");
+        }
+    });
 
     /* Functions and callbacks */
 
@@ -51,12 +100,13 @@ window.onload = function () {
         if (!locations) {
             // Set default locations
             locations = [
-                {"name":"Paris, France", "coordinates": "48.8588589,2.3470599"},
-                {"name":"San Francisco, CA, United States", "coordinates": "37.7577,-122.4376"},
-                {"name":"London, United Kingdom", "coordinates": "51.5286416,-0.1015987"},
+                {"id": "12939334", "name":"Paris, France", "coordinates": [48.8588589, 2.3470599]},
+                {"id": "12939335", "name":"San Francisco, CA, United States", "coordinates": [37.7577, -122.4376]},
+                {"id": "12939336", "name":"London, United Kingdom", "coordinates": [51.5286416, -0.1015987]},
             ];
             localStorage.setItem("locations", JSON.stringify(locations));
         }
+        $('#locations ul').empty();
         // Populate option selector
         $.each(locations, function(i, loc) {
             $('#locations ul').append('<li data-value="' + loc.coordinates + '"><p>' + loc.name + '</p></li>');
@@ -193,22 +243,56 @@ window.onload = function () {
         $('#button-website').val(e.url);
         $('#detail-description').html('');
         $('#event-detail-progress').show();
+
+        updateMapMarker(mapEvent, markerEvent, e.coordinates);
+
         $.getJSON(eventunityAPI + "/events/" + e.id + "/?callback=?")
         .done(function(detail) {
             $('#detail-description').html(detail.description);
-            if (!marker) {
-                map.invalidateSize();
-                marker = L.marker(detail.coordinates).addTo(map);
-            } else {
-                marker.setLatLng(detail.coordinates);
-                marker.update();
-            }
-            map.setView(detail.coordinates);
         })
         .always(function() {
             $('#event-detail-progress').hide();
         });
 
+    }
+
+    function populateLocationsAdminList() {
+        locationsAdminList.removeAllItems();
+        $.each(locations, function(i, loc) {
+            locItem = locationsAdminList.append(
+                loc.name,
+                null,
+                loc.id,
+                function(target, loc) {removeLocation(loc)},
+                loc
+            );
+        });
+    }
+
+    function removeLocation(loc) {
+        $.each(locations, function(i) {
+            if (locations[i].id === loc.id) {
+                locations.splice(i, 1);
+                return false;
+            }
+        });
+        $('#'+loc.id).remove();
+        updateMapMarker(mapLocation, markerLocation);
+        localStorage.setItem("locations", JSON.stringify(locations));
+        restoreLocationsOptionSelector();
+        fetchHomeData(currentCoordinates);
+    }
+
+    function updateMapMarker(map, marker, coordinates) {
+        if (coordinates === undefined) coordinates = locations[0].coordinates;
+        if (!marker) {
+            map.invalidateSize();
+            marker = L.marker(coordinates).addTo(map);
+        } else {
+            marker.setLatLng(coordinates);
+            marker.update();
+        }
+        map.setView(coordinates);
     }
 
     // Add an event listener that is pending on the initialization

@@ -66,7 +66,7 @@
                 <nav>
                     <ul>
                         <li>
-                            <a href="#" id="action-add-location">
+                            <a href="#" id="action-location-admin">
                                 <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/language-chooser.svg" alt="Locations">
                                 <span>Locations</span>
                             </a>
@@ -74,6 +74,27 @@
                    </ul>
                </nav>
             </footer>
+          </div>
+
+          <!-- Location admin page -->
+          <div data-role="page" id="location-page" data-title="Locations">
+            <section style="margin: 1rem;">
+                <div class="inset">
+                    <input id="location-name" type="search" placeholder="Enter a city name" style="width: 100%; margin-bottom: 10px;">
+                    <button id="location-search" data-role="button">Search</button>
+                </div>
+                <div id="map-location"></div>
+                <div class="">
+                    <div class="inset">
+                      <div>
+                        <button id="location-add" data-role="button" class="negative">Add</button>
+                      </div>
+                    </div>
+                </div>
+            </section>
+            <section data-role="list" id="locations-admin" class="">
+                <header class="large-font">My locations</header>
+            </section>
           </div>
 
           <!-- Events list -->
@@ -90,7 +111,7 @@
           <!-- Event detail -->
           <div data-role="page" id="detail-page" data-title="Event">
             <section id="eventdetail">
-                <div id="map"></div>
+                <div id="map-event"></div>
                 <div class="event-content">
                     <p id="detail-name" class="xlarge-font"></p>
                     <p><span id="detail-date" class="event-date"></span></p>
