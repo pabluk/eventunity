@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 
 from events.models import Community, Event
 from events.utils import json_response
+from events.nominatim import Geocoder
 
 
 def index(request):
@@ -67,3 +68,11 @@ def events_by_location(request, coordinates, distance):
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     return event.to_json_dict()
+
+
+@json_response
+def locations(request, name):
+    """Search locations by name using the Geocoder API."""
+    g = Geocoder()
+    location = g.search(name)
+    return location

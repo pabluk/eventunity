@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^api/events/location/(?P<coordinates>[\d\-\.,]+)/$', 'events.views.events_by_location', {'distance': 500}),
     url(r'^api/events/location/(?P<coordinates>[\d\-\.,]+)/(?P<distance>\d+)/$', 'events.views.events_by_location'),
     url(r'^api/events/community/(?P<community_id>\d+)/$', 'events.views.events_by_community', name='events_by_community'),
+    url(r'^api/locations/(?P<name>.+)/$', 'events.views.locations', name='locations'),
 
     url(r'^admin/', include(admin.site.urls)),
 
