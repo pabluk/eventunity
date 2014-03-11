@@ -2,8 +2,7 @@
  * Wait before the DOM has been loaded before initializing the Ubuntu UI layer
  */
 window.onload = function () {
-    //var eventunityAPI = 'http://eventunity.seminar.io/api';
-    var eventunityAPI = 'http://localhost:8000/api';
+    var eventunityAPI = 'http://eventunity.seminar.io/api';
     var UI = new UbuntuUI();
 
     var markerEvent;
