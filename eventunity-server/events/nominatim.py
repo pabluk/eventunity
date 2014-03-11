@@ -15,12 +15,13 @@ class Geocoder(object):
         params = {'q': name, 'format': 'json'}
         headers = {'User-Agent': self.user_agent}
 
-        location = {'name': u'', 'coordinates': None}
+        location = {'id': '', 'name': u'', 'coordinates': None}
         r = requests.get(self.url, params=params, headers=headers)
         for l in r.json():
             # Filter cities
             if l['type'] in [u'city', u'administrative']:
                 location = {
+                    'id': l['place_id'],
                     'name': l['display_name'],
                     'coordinates': [l['lat'], l['lon']]
                 }
