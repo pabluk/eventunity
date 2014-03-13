@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from events.models import Community, Event
 from events.utils import json_response
 from events.nominatim import Geocoder
+from ratelimit.decorators import ratelimit
 
 
 def index(request):
@@ -70,9 +71,15 @@ def event_detail(request, event_id):
     return event.to_json_dict()
 
 
+@ratelimit(rate='120/h', method=None)
 @json_response
 def locations(request, name):
     """Search locations by name using the Geocoder API."""
+    was_limited = getattr(request, 'limited', False)
+    if was_limited:
+        msg = u'Sorry, you have exceeded your quota limit ' \
+               'of search requests!. Please try again in a few minutes.'
+        return {'error': msg}
     g = Geocoder()
     location = g.search(name)
     return location
