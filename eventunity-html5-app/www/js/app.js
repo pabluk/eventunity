@@ -62,6 +62,15 @@ window.onload = function () {
         $('#location-search').addClass("negative");
         $.getJSON(eventunityAPI + "/locations/" + name + "/?callback=?")
         .done(function(data) {
+            if (data.error) {
+                var dialogError = UI.dialog("dialog-error");
+                $("#dialog-error p").text(data.error);
+                dialogError.show();
+                UI.button('button-error-ok').click(function () {
+                    dialogError.hide();
+                });
+                return false;
+            }
             if (data.coordinates) {
                 locationNew = data;
                 locationNew.name = name; // Set name given by user
@@ -75,7 +84,6 @@ window.onload = function () {
         .always(function() {
             $('#location-search').removeClass("negative");
         });
-
     });
 
     UI.button('location-add').click(function () {
