@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
+from django.core.mail import mail_admins
 from django.shortcuts import render_to_response, get_object_or_404
 
 from events.models import Community, Event
@@ -77,9 +78,11 @@ def locations(request, name):
     """Search locations by name using the Geocoder API."""
     was_limited = getattr(request, 'limited', False)
     if was_limited:
-        msg = u'Sorry, you have exceeded your quota limit ' \
+        message = "\n".join([u"> %s: %s" % i for i in request.META.items()])
+        mail_admins(u"ERROR: Search request limit", message)
+        error = u'Sorry, you have exceeded your quota limit ' \
                'of search requests!. Please try again in a few minutes.'
-        return {'error': msg}
+        return {'error': error}
     g = Geocoder()
     location = g.search(name)
     return location
