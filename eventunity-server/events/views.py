@@ -78,7 +78,8 @@ def locations(request, name):
     """Search locations by name using the Geocoder API."""
     was_limited = getattr(request, 'limited', False)
     if was_limited:
-        message = "\n".join([u"> %s: %s" % i for i in request.META.items()])
+        message = u"Request data:\n\n"
+        message += "\n".join([u"%s: %s" % i for i in request.META.items()])
         mail_admins(u"ERROR: Search request limit", message)
         error = u'Sorry, you have exceeded your quota limit ' \
                'of search requests!. Please try again in a few minutes.'
