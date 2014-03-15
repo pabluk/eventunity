@@ -8,8 +8,8 @@
             "desktop": "eventunity.desktop"
         }
     },
-    "maintainer": "Pablo Seminario",
+    "maintainer": "Pablo Seminario <pablo@seminar.io>",
     "name": "com.ubuntu.developer.pabluk.eventunity",
     "title": "eventunity",
-    "version": "0.2"
+    "version": "0.3.2"
 }
