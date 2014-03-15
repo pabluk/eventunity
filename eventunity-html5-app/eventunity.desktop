@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Eventunity
 Exec=ubuntu-html5-app-launcher $@ --www=www
-Icon=qmlscene
+Icon=www/img/eventunity.png
 Terminal=false
 Type=Application
 X-Ubuntu-Touch=true
