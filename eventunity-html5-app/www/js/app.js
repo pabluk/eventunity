@@ -45,11 +45,6 @@ window.onload = function () {
         loadEventsByLocation(e.target.value);
     });
 
-    UI.button('button-website').click(function (e) {
-        console.log("Open website " + e.target.value);
-        window.open(e.target.value, '_blank');
-    });
-
     UI.button('action-location-admin').click(function () {
         UI.pagestack.push("location-page");
         updateMapMarker(mapLocation, markerLocation);
@@ -247,7 +242,6 @@ window.onload = function () {
         $('#detail-name').text(e.name);
         $('#detail-date').text(e.date);
         $('#detail-location').text(e.location);
-        $('#button-website').val(e.url);
         $('#detail-description').html('');
         $('#event-detail-progress').show();
 
