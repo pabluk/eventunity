@@ -50,10 +50,10 @@ window.onload = function () {
         window.open(e.target.value, '_blank');
     });
 
-    $('#action-location-admin').click(function () {
-        UI.pagestack.push("location-page")
-            updateMapMarker(mapLocation, markerLocation);
-            populateLocationsAdminList();
+    UI.button('action-location-admin').click(function () {
+        UI.pagestack.push("location-page");
+        updateMapMarker(mapLocation, markerLocation);
+        populateLocationsAdminList();
     });
 
     UI.button('location-search').click(function () {
