@@ -23,7 +23,10 @@ class Command(BaseCommand):
                 Event.objects.get(community=community, url=data['url'])
             except Event.DoesNotExist:
                 data['community'] = community
-                data['coordinates'] = Point(data['coordinates']) if data['coordinates'] else None
+                if data['coordinates']:
+                    lng = data['coordinates']['lng']
+                    lat = data['coordinates']['lat']
+                    data['coordinates'] = Point(lng, lat)
                 event = Event(**data)
                 event.save()
                 count += 1
