@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.gis.geos import Point
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from events.models import Community, Event
 
 
