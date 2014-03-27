@@ -169,7 +169,7 @@ window.onload = function () {
                 community
             );
             $('a', communityItem).prepend('<aside><img src="' + community.logo + '"></aside>');
-            $('a', communityItem).append('<br><span class="small-font">' + community.events_count + ' events</span>');
+            $('a', communityItem).append('<br><span class="small-font">' + community.events_count + ' ' + 'event'.pluralize(community.events_count) + '</span>');
         });
     }
 
@@ -303,3 +303,10 @@ window.onload = function () {
             console.log('Platform layer API ready');
     }, false);
 };
+
+
+String.prototype.pluralize = function(count, plural) {
+    if (typeof plural !== "string")
+        plural = this + 's';
+    return (count == 1 ? this : plural)
+}
